@@ -27,11 +27,25 @@ use embedded_hal::blocking::delay::{DelayMs, DelayUs};
 #[cfg(feature = "stm32f411")]
 use stm32f4xx_hal::{bb, rcc::Clocks, stm32::RCC, stm32::TIM1};
 
+/// Trait for all timers that can be used with `TimerDelay`.
 pub trait TimerExt {
+    /// Enables the timer.
+    ///
+    /// Do not call this function directly - use `TimerDelay` instead.
     unsafe fn enable(&mut self);
+    /// Disables the timer.
+    ///
+    /// Do not call this function directly - use `TimerDelay` instead.
     unsafe fn disable(&mut self);
 
+    /// Calculates prescaler values and returns prescaler values for microsecond and millisecond
+    /// delays.
+    ///
+    /// Do not call this function directly - use `TimerDelay` instead.
     fn calc_pre(clocks: Clocks) -> (u32, u32);
+    /// Performs a delay loop for the specified time using the specified prescaler.
+    ///
+    /// Do not call this function directly - use `TimerDelay` instead.
     unsafe fn delay(&mut self, prescaler: u32, time: u16);
 }
 
@@ -85,6 +99,7 @@ impl TimerExt for TIM1 {
     }
 }
 
+/// Delay functions which use a hardware timer (see `TimerExt`).
 pub struct TimerDelay<T> {
     t: T,
     us_pre: u32,
@@ -95,6 +110,7 @@ impl<T> TimerDelay<T>
 where
     T: TimerExt,
 {
+    /// Creates a delay object for the given timer.
     pub fn init(mut t: T, clocks: Clocks) -> TimerDelay<T> {
         unsafe {
             t.enable();
@@ -103,7 +119,10 @@ where
         TimerDelay { t, us_pre, ms_pre }
     }
 
-    pub fn free(mut self) -> T {
+    /// Destroys the delay object and returns the underlying timer.
+    ///
+    /// The timer is guaranteed to be disabled.
+    pub fn release(mut self) -> T {
         unsafe {
             self.t.disable();
         }
