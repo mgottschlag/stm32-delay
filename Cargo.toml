@@ -1,0 +1,31 @@
+[package]
+name = "stm32-delay"
+version = "0.1.0"
+authors = ["Mathias Gottschlag <mgottschlag@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+embedded-hal = "0.2.6"
+stm32f1xx-hal = { version = "0.7", features = ["stm32f103"], optional = true }
+stm32f4xx-hal = { version = "0.9", features = ["stm32f411", "rt"], optional = true }
+
+[features]
+device-selected = []
+stm32f103 = ["stm32f1xx-hal"]
+stm32f401 = ["stm32f4xx-hal/stm32f401", "device-selected"]
+stm32f405 = ["stm32f4xx-hal/stm32f405", "device-selected"]
+stm32f407 = ["stm32f4xx-hal/stm32f407", "device-selected"]
+stm32f410 = ["stm32f4xx-hal/stm32f410", "device-selected"]
+stm32f411 = ["stm32f4xx-hal/stm32f411", "device-selected"]
+stm32f412 = ["stm32f4xx-hal/stm32f412", "device-selected"]
+stm32f413 = ["stm32f4xx-hal/stm32f413", "device-selected"]
+stm32f415 = ["stm32f4xx-hal/stm32f405", "device-selected"]
+stm32f417 = ["stm32f4xx-hal/stm32f407", "device-selected"]
+stm32f423 = ["stm32f4xx-hal/stm32f413", "device-selected"]
+stm32f427 = ["stm32f4xx-hal/stm32f427", "device-selected"]
+stm32f429 = ["stm32f4xx-hal/stm32f429", "device-selected"]
+stm32f437 = ["stm32f4xx-hal/stm32f427", "device-selected"]
+stm32f439 = ["stm32f4xx-hal/stm32f429", "device-selected"]
+stm32f446 = ["stm32f4xx-hal/stm32f446", "device-selected"]
+stm32f469 = ["stm32f4xx-hal/stm32f469", "device-selected"]
+stm32f479 = ["stm32f4xx-hal/stm32f469", "device-selected"]
