@@ -1,3 +1,23 @@
+//! `DelayMs` and `DelayUs` implementation for STM32 MCUs.
+//!
+//! This crate provides an implementation of the `DelayMs` and `DelayUs` traits from `embedded-hal`
+//! for various STM32 MCUs, as the corresponding HALs often only provide functionality for delays
+//! based on the system timer.
+//!
+//! # Usage
+//!
+//! The `TimerDelay` type can be initialized for any type for which the `TimerExt` provided by this
+//! repository is implemented and is used as follows:
+//!
+//! TBD
+//!
+//! # Limitations
+//!
+//! For high accuracy, the corresponding APB clock should be a multiple of 1000000. The code may
+//! provide reduced accuracy for very long delays (i.e., >65k milliseconds or microseconds) as the
+//! time is split into multiple shorter delays. Similarly, the code may provide reduced accuracy if
+//! for `DelayMs` if the timer input clock is faster than 65536kHz, as then the limited prescaler
+//! requires the whole delay loop to be repeated twice.
 #![no_std]
 
 #[cfg(not(feature = "device-selected"))]
